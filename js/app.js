@@ -24,12 +24,18 @@ function ProductImage(name, src, id) {
 ProductImage.productImageArray = [];
 ProductImage.pastSelectionArray = [];
 
+// Render three random images for selection
 ProductImage.renderRandomThree = function () {
 
   pickRandomThree();
   productOptionOneLabel.src = ProductImage.productImageArray[ProductImage.pastSelectionArray[0]].src;
+  productOptionOneLabel.id = ProductImage.productImageArray[ProductImage.pastSelectionArray[0]].id;
+
   productOptionTwoLabel.src = ProductImage.productImageArray[ProductImage.pastSelectionArray[1]].src;
+  productOptionTwoLabel.id = ProductImage.productImageArray[ProductImage.pastSelectionArray[1]].id;
+
   productOptionThreeLabel.src = ProductImage.productImageArray[ProductImage.pastSelectionArray[2]].src;
+  productOptionThreeLabel.id = ProductImage.productImageArray[ProductImage.pastSelectionArray[2]].id;
 
 };
 
@@ -44,11 +50,23 @@ new ProductImage('Cthulhu', './img/cthulhu.jpg', 'cthulhuImg');
 new ProductImage('Dog Duck', './img/dog-duck.jpg', 'dogDuckImg');
 new ProductImage('Dragon', './img/dragon.jpg', 'dragonImg');
 new ProductImage('Pen', './img/pen.jpg', 'penImg');
+new ProductImage('Pet Sweep', './img/pet-sweep.jpg', 'petSweepImg');
+new ProductImage('Scissors', './img/scissors.jpg', 'scissorsImg');
+new ProductImage('Shark', './img/shark.jpg', 'sharkImg');
+new ProductImage('Sweep', './img/sweep.png', 'sweepImg');
+new ProductImage('Tauntaun', './img/tauntaun.jpg', 'tauntaunImg');
+new ProductImage('Unicorn', './img/unicorn.jpg', 'unicornImg');
+new ProductImage('USB', './img/usb.gif', 'usbImg');
+new ProductImage('Water Can', './img/water-can.jpg', 'waterCanImg');
+new ProductImage('Wine Glass', './img/wine-glass.jpg', 'wineGlassImg');
+
 ProductImage.renderRandomThree();
+
 /***********************************
 *         Helper Functions         *
 ************************************/
 
+// Generate 3 unique random numbers from within array range
 function pickRandomThree() {
 
   do {
@@ -68,25 +86,3 @@ function pickRandomThree() {
   return ProductImage.pastSelectionArray;
 
 }
-
-// var pastSelection1 = 0;
-// var pastSelection2 = 4;
-
-// GoatImage.renderTwoRandomly = function () {
-//   do {
-//     var randomNumber1 = Math.floor(Math.random() * GoatImage.goatArray.length);
-//   } while(randomNumber1 == pastSelection1 || randomNumber1 == pastSelection2);
-
-//   do {
-//     var randomNumber2 = Math.floor(Math.random() * GoatImage.goatArray.length);
-//   } while (randomNumber2 === randomNumber1 || randomNumber2 === pastSelection1 || randomNumber2 === pastSelection2);
-
-//   goatImage1.src = GoatImage.goatArray[randomNumber1].src;
-//   goatImage2.src = GoatImage.goatArray[randomNumber2].src;
-
-//   goatImage1.dataset.index = randomNumber1;
-//   goatImage2.dataset.index = randomNumber2;
-
-//   pastSelection1 = randomNumber1;
-//   pastSelection2 = randomNumber2;
-// };
