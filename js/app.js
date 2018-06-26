@@ -66,10 +66,10 @@ productSelectionForm.addEventListener('submit', productSelectionBtnHandler);
 ************************************/
 function productSelectionBtnHandler(event) {
   event.preventDefault();
-  overallClicks += 1;
   for (var i = 0; i < productSelectionForm.productOptions.length; i++) {
     ProductImage.productImageArray[ProductImage.pastSelectionArray[i]].numTimesDisplayed += 1;
     if (productSelectionForm.productOptions[i].checked) {
+      overallClicks += 1;
       ProductImage.productImageArray[ProductImage.pastSelectionArray[i]].numTimesClicked += 1;
     }
   }
@@ -158,7 +158,7 @@ new ProductImage('Pen', './img/pen.jpg', 'penImg');
 new ProductImage('Pet Sweep', './img/pet-sweep.jpg', 'petSweepImg');
 new ProductImage('Scissors', './img/scissors.jpg', 'scissorsImg');
 new ProductImage('Shark', './img/shark.jpg', 'sharkImg');
-new ProductImage('Sweep', './img/sweep.png', 'sweepImg');
+new ProductImage('Sweep', './img/sweep.jpg', 'sweepImg');
 new ProductImage('Tauntaun', './img/tauntaun.jpg', 'tauntaunImg');
 new ProductImage('Unicorn', './img/unicorn.jpg', 'unicornImg');
 new ProductImage('USB', './img/usb.gif', 'usbImg');
