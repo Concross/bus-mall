@@ -25,7 +25,6 @@ function ProductImage(name, src, id) {
 
 ProductImage.productImageArray = [];
 ProductImage.pastSelectionArray = [];
-console.log(ProductImage.rankedSelectionArray);
 
 // Render three random images for selection
 ProductImage.renderRandomThree = function () {
@@ -46,7 +45,7 @@ ProductImage.renderRandomThree = function () {
 ProductImage.renderRankedTable = function () {
   calcPercentageClicked();
   createHeaderRow();
-  for (var i in ProductImage.productImageArray){
+  for (var i in ProductImage.productImageArray) {
     var trEl = document.createElement('tr');
     createElAndAppend('th', ProductImage.productImageArray[i].name, trEl);
     createElAndAppend('td', ProductImage.productImageArray[i].numTimesClicked + ' clicks for ' + ProductImage.productImageArray[i].name, trEl);
@@ -64,10 +63,10 @@ productSelectionForm.addEventListener('submit', productSelectionBtnHandler);
 /***********************************
 *         Event Handlers           *
 ************************************/
-function productSelectionBtnHandler (event) {
+function productSelectionBtnHandler(event) {
   event.preventDefault();
   overallClicks += 1;
-  for (var i = 0; i < productSelectionForm.productOptions.length; i++){
+  for (var i = 0; i < productSelectionForm.productOptions.length; i++) {
     ProductImage.productImageArray[ProductImage.pastSelectionArray[i]].numTimesDisplayed += 1;
     if (productSelectionForm.productOptions[i].checked) {
       ProductImage.productImageArray[ProductImage.pastSelectionArray[i]].numTimesClicked += 1;
@@ -112,7 +111,7 @@ function pickRandomThree() {
 function createRankedArray() {
   calcPercentageClicked();
   var rankedSelectionArray = ProductImage.productImageArray;
-  rankedSelectionArray.sort(function(a, b){parseFloat(a.percentageClicked) - parseFloat(b.percentageClicked);});
+  rankedSelectionArray.sort(function (a, b) { parseFloat(a.percentageClicked) - parseFloat(b.percentageClicked); });
   rankedSelectionArray = rankedSelectionArray.reverse();
   return rankedSelectionArray;
 
@@ -122,7 +121,6 @@ function createRankedArray() {
 function calcPercentageClicked() {
   for (var product in ProductImage.productImageArray) {
     ProductImage.productImageArray[product].percentageClicked = 100 * (ProductImage.productImageArray[product].numTimesClicked / ProductImage.productImageArray[product].numTimesDisplayed);
-    console.log(ProductImage.productImageArray[product].name + ': ' + ProductImage.productImageArray[product].percentageClicked);
   }
 }
 
