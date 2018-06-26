@@ -27,35 +27,34 @@
   <main>
 
     <section>
-      <form action="">
+      <form id="productSelectionForm" action="">
 
         <fieldset>
           <legend></legend>
-          <radiogroup>
 
-            <label for="optionOne">
-              <img src="" id="productOptionOne" height="300" width="300" alt="">
-            </label>
-            <input type="radio" name="optionOne" id="">
+          <img src="" id="productOptionOne" height="300" width="300" alt="">
 
-            <label for="optionTwo" >
-              <img src="" id="productOptionTwo" height="300" width="300" alt="">
-            </label>
-            <input type="radio" name="optionTwo" id="">
+          <img src="" id="productOptionTwo" height="300" width="300" alt="">
 
-            <label for="optionThree" >
-              <img src="" id="productOptionThree" height="300" width="300" alt="">
-            </label>
-            <input type="radio" name="optionThree" id="">
+          <img src="" id="productOptionThree" height="300" width="300" alt="">
 
+          <radiogroup id="productSelectionOptions">
+            <input type="radio" name="productOptions" value="0">
+            <input type="radio" name="productOptions" value="1">
+            <input type="radio" name="productOptions" value="2">
           </radiogroup>
 
-          <input type="submit" name="voteButton" value="Vote!" id="">
+          <input type="submit" value="Vote!" id="voteButton">
         </fieldset>
 
       </form>
     </section>
+    
+    <section>
+      <table id="results" style="display: none;">
 
+      </table>
+    </section>
     <section>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
         aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -63,11 +62,6 @@
         sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
     </section>
 
-    <section>
-      <table id="results">
-
-      </table>
-    </section>
 
   </main>
 
