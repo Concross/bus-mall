@@ -1,5 +1,9 @@
+* {
+  outline: 1px dotted red;
+}
+
 header {
-  background-color: burlywood;
+  background-color: olivedrab;
   height: 120px;
   margin-bottom: 50px;
 }
@@ -12,14 +16,18 @@ header img {
 header h1 {
   line-height: 120px;
   font-size: 4em;
+  float: left;
 }
 
 nav {
   float: right;
+  height: 60px;
+  margin: 30px;
+  background-color: bisque;
 }
 
 nav ul {
-  margin: 10px 30px; 
+  margin: 15px 30px; 
   font-size: 28px;
 }
 
@@ -31,3 +39,24 @@ main {
   max-width: 960px;
   margin: auto;
 }
+
+fieldset section {
+  float: left;
+  margin-right: 20px;
+  width: 300px;
+}
+
+fieldset h1 {
+  display: block;
+  width: 300px;
+  font-size: 38px;
+  text-align: center;
+}
+
+input[type='radio'] {
+  width: 100%;
+  margin: auto;
+}
+
+
+
