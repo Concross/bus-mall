@@ -43,6 +43,7 @@ ProductImage.renderRandomThree = function () {
 
 // Create a table using the available rankings;
 ProductImage.renderRankedTable = function () {
+  // createRankedArray();
   calcPercentageClicked();
   createHeaderRow();
   for (var i in ProductImage.productImageArray) {
@@ -110,9 +111,10 @@ function pickRandomThree() {
 // Function that tries to create a ranked array
 function createRankedArray() {
   calcPercentageClicked();
-  var rankedSelectionArray = ProductImage.productImageArray;
-  rankedSelectionArray.sort(function (a, b) { parseFloat(a.percentageClicked) - parseFloat(b.percentageClicked); });
-  rankedSelectionArray = rankedSelectionArray.reverse();
+  var rankedSelectionArray = ProductImage.productImageArray.splice(0);
+  for (var i = 0; i < rankedSelectionArray.length; i++){
+    //iterate through the array and sort from high to low
+  }
   return rankedSelectionArray;
 
 }
