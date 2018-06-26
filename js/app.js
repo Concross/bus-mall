@@ -44,8 +44,17 @@ ProductImage.renderRandomThree = function () {
 
 // Create a table using the available rankings;
 ProductImage.renderRankedTable = function () {
-  createRankedArray();
-  console.log(rankedSelectionArray);
+  calcPercentageClicked();
+  createHeaderRow();
+  for (var i in ProductImage.productImageArray){
+    var trEl = document.createElement('tr');
+    createElAndAppend('th', ProductImage.productImageArray[i].name, trEl);
+    createElAndAppend('td', ProductImage.productImageArray[i].numTimesClicked, trEl);
+    createElAndAppend('td', ProductImage.productImageArray[i].numTimesDisplayed, trEl);
+    createElAndAppend('td', ProductImage.productImageArray[i].percentageClicked, trEl);
+    resultsTable.appendChild(trEl);
+  }
+
 };
 /***********************************
 *         Event Listeners          *
@@ -66,6 +75,8 @@ function productSelectionBtnHandler (event) {
   }
   if (overallClicks === 25) {
     productSelectionForm.style.display = 'none';
+    ProductImage.renderRankedTable();
+    resultsTable.style.display = 'block';
   }
   ProductImage.renderRandomThree();
 }
@@ -114,6 +125,24 @@ function calcPercentageClicked() {
     console.log(ProductImage.productImageArray[product].name + ': ' + ProductImage.productImageArray[product].percentageClicked);
   }
 }
+
+function createElAndAppend(el, content, parent) {
+  var newEl = document.createElement(el);
+  newEl.textContent = content;
+  parent.appendChild(newEl);
+};
+
+// Helper function to create a header row
+function createHeaderRow() {
+
+  var trEl = document.createElement('tr');
+  createElAndAppend('th', 'Products', trEl);
+  createElAndAppend('th', 'Total # Clicks', trEl);
+  createElAndAppend('th', 'Total # Appearances', trEl);
+  createElAndAppend('th', 'Clicked Percentage', trEl);
+
+  resultsTable.appendChild(trEl);
+};
 
 new ProductImage('Bag', './img/bag.jpg', 'bagImg');
 new ProductImage('Banana', './img/banana.jpg', 'bananaImg');
