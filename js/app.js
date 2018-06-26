@@ -17,7 +17,7 @@ var clicksArray = [];
 var numTimesDisplayedArray = [];
 var percentClickedArray = [];
 
-var chartColors = ['#E52B50', '#FFBF00', '#9966CC','#FBCEB1','#7FFFD4','#007FFF','#7FFF00','#50C878','#FFF700','#EDC9AF','#8E4585','#808000','#FFA500','#FF2400','#C0C0C0', '#40826D', '#C71585', '#92000A', '#FFC0CB', '#FF4500'];
+var chartColors = ['#E52B50', '#FFBF00', '#9966CC', '#FBCEB1', '#7FFFD4', '#007FFF', '#7FFF00', '#50C878', '#FFF700', '#EDC9AF', '#8E4585', '#808000', '#FFA500', '#FF2400', '#C0C0C0', '#40826D', '#C71585', '#92000A', '#FFC0CB', '#FF4500'];
 
 var clicksChart;
 var chartDrawn = false;
@@ -68,6 +68,7 @@ ProductImage.renderRankedTable = function () {
   }
 
 };
+
 /***********************************
 *         Event Listeners          *
 ************************************/
@@ -79,14 +80,17 @@ productSelectionForm.addEventListener('submit', productSelectionBtnHandler);
 function productSelectionBtnHandler(event) {
   event.preventDefault();
   for (var i = 0; i < productSelectionForm.productOptions.length; i++) {
-    ProductImage.productImageArray[ProductImage.pastSelectionArray[i]].numTimesDisplayed += 1;
+    var currentObject = ProductImage.productImageArray[ProductImage.pastSelectionArray[i]];
+
+    currentObject.numTimesDisplayed += 1;
     if (productSelectionForm.productOptions[i].checked) {
       overallClicks += 1;
-      ProductImage.productImageArray[ProductImage.pastSelectionArray[i]].numTimesClicked += 1;
+      currentObject.numTimesClicked += 1;
     }
   }
   if (overallClicks === 25) {
     productSelectionForm.style.display = 'none';
+    drawChart();
     ProductImage.renderRankedTable();
     resultsTable.style.display = 'block';
   }
@@ -105,6 +109,8 @@ function updateChartArrays() {
     labelsArray.push(currentObject.name);
     clicksArray.push(currentObject.numTimesClicked);
     numTimesDisplayedArray.push(currentObject.numTimesDisplayed);
+    
+    calcPercentageClicked();
     percentClickedArray.push(currentObject.percentageClicked);
   }
 }
@@ -133,7 +139,6 @@ function pickRandomThree() {
 
 // Function that tries to create a ranked array
 function createRankedArray() {
-  calcPercentageClicked();
   var rankedSelectionArray = ProductImage.productImageArray.splice(0);
   for (var i = 0; i < rankedSelectionArray.length; i++) {
     //iterate through the array and sort from high to low
@@ -144,7 +149,12 @@ function createRankedArray() {
 // Helper function to calculate the percentage clicked for each object
 function calcPercentageClicked() {
   for (var product in ProductImage.productImageArray) {
-    ProductImage.productImageArray[product].percentageClicked = 100 * (ProductImage.productImageArray[product].numTimesClicked / ProductImage.productImageArray[product].numTimesDisplayed);
+    var currentObject = ProductImage.productImageArray[product];
+    if (currentObject.numTimesDisplayed === 0) {
+      currentObject.percentageClicked = 0;
+    } else {
+      currentObject.percentageClicked = 100 * (currentObject.numTimesClicked / currentObject.numTimesDisplayed);
+    }
   }
 }
 
