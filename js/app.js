@@ -19,13 +19,13 @@ function ProductImage(name, src, id) {
   this.id = id;
   this.numTimesClicked = 0;
   this.numTimesDisplayed = 0;
-  this.selectionPercentage;
+  this.percentageClicked;
   ProductImage.productImageArray.push(this);
 };
 
 ProductImage.productImageArray = [];
 ProductImage.pastSelectionArray = [];
-ProductImage.rankedSelectionArray = [];
+console.log(ProductImage.rankedSelectionArray);
 
 // Render three random images for selection
 ProductImage.renderRandomThree = function () {
@@ -42,9 +42,14 @@ ProductImage.renderRandomThree = function () {
 
 };
 
+// Create a table using the available rankings;
+ProductImage.renderRankedTable = function () {
+  createRankedArray();
+  console.log(rankedSelectionArray);
+};
 /***********************************
 *         Event Listeners          *
-************************************/ 
+************************************/
 productSelectionForm.addEventListener('submit', productSelectionBtnHandler);
 
 /***********************************
@@ -89,6 +94,25 @@ function pickRandomThree() {
 
   return ProductImage.pastSelectionArray;
 
+}
+
+
+// Function that tries to create a ranked array
+function createRankedArray() {
+  calcPercentageClicked();
+  var rankedSelectionArray = ProductImage.productImageArray;
+  rankedSelectionArray.sort(function(a, b){parseFloat(a.percentageClicked) - parseFloat(b.percentageClicked);});
+  rankedSelectionArray = rankedSelectionArray.reverse();
+  return rankedSelectionArray;
+
+}
+
+// Helper function to calculate the percentage clicked for each object
+function calcPercentageClicked() {
+  for (var product in ProductImage.productImageArray) {
+    ProductImage.productImageArray[product].percentageClicked = 100 * (ProductImage.productImageArray[product].numTimesClicked / ProductImage.productImageArray[product].numTimesDisplayed);
+    console.log(ProductImage.productImageArray[product].name + ': ' + ProductImage.productImageArray[product].percentageClicked);
+  }
 }
 
 new ProductImage('Bag', './img/bag.jpg', 'bagImg');
