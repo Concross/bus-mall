@@ -43,6 +43,7 @@ ProductImage.renderRandomThree = function () {
 
 // Create a table using the available rankings;
 ProductImage.renderRankedTable = function () {
+  // createRankedArray();
   calcPercentageClicked();
   createHeaderRow();
   for (var i in ProductImage.productImageArray) {
@@ -65,10 +66,10 @@ productSelectionForm.addEventListener('submit', productSelectionBtnHandler);
 ************************************/
 function productSelectionBtnHandler(event) {
   event.preventDefault();
-  overallClicks += 1;
   for (var i = 0; i < productSelectionForm.productOptions.length; i++) {
     ProductImage.productImageArray[ProductImage.pastSelectionArray[i]].numTimesDisplayed += 1;
     if (productSelectionForm.productOptions[i].checked) {
+      overallClicks += 1;
       ProductImage.productImageArray[ProductImage.pastSelectionArray[i]].numTimesClicked += 1;
     }
   }
@@ -110,9 +111,10 @@ function pickRandomThree() {
 // Function that tries to create a ranked array
 function createRankedArray() {
   calcPercentageClicked();
-  var rankedSelectionArray = ProductImage.productImageArray;
-  rankedSelectionArray.sort(function (a, b) { parseFloat(a.percentageClicked) - parseFloat(b.percentageClicked); });
-  rankedSelectionArray = rankedSelectionArray.reverse();
+  var rankedSelectionArray = ProductImage.productImageArray.splice(0);
+  for (var i = 0; i < rankedSelectionArray.length; i++){
+    //iterate through the array and sort from high to low
+  }
   return rankedSelectionArray;
 
 }
@@ -156,7 +158,7 @@ new ProductImage('Pen', './img/pen.jpg', 'penImg');
 new ProductImage('Pet Sweep', './img/pet-sweep.jpg', 'petSweepImg');
 new ProductImage('Scissors', './img/scissors.jpg', 'scissorsImg');
 new ProductImage('Shark', './img/shark.jpg', 'sharkImg');
-new ProductImage('Sweep', './img/sweep.png', 'sweepImg');
+new ProductImage('Sweep', './img/sweep.jpg', 'sweepImg');
 new ProductImage('Tauntaun', './img/tauntaun.jpg', 'tauntaunImg');
 new ProductImage('Unicorn', './img/unicorn.jpg', 'unicornImg');
 new ProductImage('USB', './img/usb.gif', 'usbImg');
