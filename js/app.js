@@ -49,7 +49,7 @@ ProductImage.renderRankedTable = function () {
   for (var i in ProductImage.productImageArray){
     var trEl = document.createElement('tr');
     createElAndAppend('th', ProductImage.productImageArray[i].name, trEl);
-    createElAndAppend('td', ProductImage.productImageArray[i].numTimesClicked, trEl);
+    createElAndAppend('td', ProductImage.productImageArray[i].numTimesClicked + ' clicks for ' + ProductImage.productImageArray[i].name, trEl);
     createElAndAppend('td', ProductImage.productImageArray[i].numTimesDisplayed, trEl);
     createElAndAppend('td', ProductImage.productImageArray[i].percentageClicked, trEl);
     resultsTable.appendChild(trEl);
