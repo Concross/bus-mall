@@ -1,9 +1,5 @@
-* {
-  outline: 1px dotted red;
-}
-
 header {
-  background-color: olivedrab;
+  background-color: silver;
   height: 120px;
   margin-bottom: 50px;
 }
@@ -23,7 +19,7 @@ nav {
   float: right;
   height: 60px;
   margin: 30px;
-  background-color: bisque;
+  background-color: slategray;
 }
 
 nav ul {
@@ -37,9 +33,12 @@ nav ul li {
 }
 main {
   max-width: 960px;
-  margin: auto;
+  margin: 30px auto;
 }
 
+/**************************************************
+*        Form Layout                              *
+***************************************************/
 fieldset section {
   float: left;
   margin-right: 30px;
@@ -54,19 +53,64 @@ fieldset h1 {
   display: block;
   width: 300px;
   font-size: 38px;
+  margin-bottom: 5px;
   text-align: center;
 }
 
 input[type='radio'] {
   width: 100%;
-  margin: auto;
+  margin: 10px auto;
 }
 
 input[type='submit'] {
   width: 100%;
   height: 50px; 
-  color: olivedrab;
-  background-color: bisque;
-  margin: auto;
+  color: white;
+  background-color: slategray;
+  border: none;
+  border-radius: 10px;
+  margin-bottom: 30px;
 }
 
+main p {
+  text-indent: 25px;
+}
+
+/**************************************************
+*        Table Layout                             *
+***************************************************/  
+table {
+  font-family: 'Open+Sans', sans-serif;
+  max-width: 100%;
+  width: 100%;
+  display: table;
+  margin: 10px auto;
+  border: 1px solid black;
+}
+
+th, td {
+  border: 1px solid #ABA78F;
+  padding: 12px 15px;
+}
+
+th {
+  font-weight: bold;
+  background: #333024;
+  color: white;
+  white-space: pre-wrap;
+}
+
+tr:not(:first-of-type) :first-child {
+  background: #ABA78F;
+}
+
+canvas {
+  width: 100%;
+  margin: 30px auto;
+}
+
+
+footer {
+  height: 120px;
+  background-color: slategray;
+}

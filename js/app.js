@@ -102,7 +102,7 @@ function productSelectionBtnHandler(event) {
     productSelectionForm.style.display = 'none';
     drawChart();
     ProductImage.renderRankedTable();
-    resultsTable.style.display = 'block';
+    resultsTable.style.display = 'table';
   }
   ProductImage.renderRandomThree();
 }
@@ -221,7 +221,7 @@ var data = {
   datasets: [{
     data: percentClickedArray, // votes array we declared earlier
     backgroundColor: chartColors,
-    hoverBackgroundColor: 'white'
+    hoverBackgroundColor: 'gray'
   }]
 };
 
