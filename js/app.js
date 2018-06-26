@@ -1,14 +1,26 @@
 'use strict';
+
+
 /***********************************
 *         Global Variables         *
 ************************************/
-
 var productOptionOneLabel = document.getElementById('productOptionOne');
 var productOptionTwoLabel = document.getElementById('productOptionTwo');
 var productOptionThreeLabel = document.getElementById('productOptionThree');
 var productSelectionForm = document.getElementById('productSelectionForm');
 var resultsTable = document.getElementById('results');
 var overallClicks = 0;
+
+// Arrays for the chart
+var labelsArray = [];
+var clicksArray = [];
+var numTimesDisplayedArray = [];
+var percentClickedArray = [];
+
+var chartColors = ['#E52B50', '#FFBF00', '#9966CC', '#FBCEB1', '#7FFFD4', '#007FFF', '#7FFF00', '#50C878', '#FFF700', '#EDC9AF', '#8E4585', '#808000', '#FFA500', '#FF2400', '#C0C0C0', '#40826D', '#C71585', '#92000A', '#FFC0CB', '#FF4500'];
+
+var clicksChart;
+var chartDrawn = false;
 
 /***********************************
 *      Product Image Object        *
@@ -56,6 +68,7 @@ ProductImage.renderRankedTable = function () {
   }
 
 };
+
 /***********************************
 *         Event Listeners          *
 ************************************/
@@ -67,14 +80,17 @@ productSelectionForm.addEventListener('submit', productSelectionBtnHandler);
 function productSelectionBtnHandler(event) {
   event.preventDefault();
   for (var i = 0; i < productSelectionForm.productOptions.length; i++) {
-    ProductImage.productImageArray[ProductImage.pastSelectionArray[i]].numTimesDisplayed += 1;
+    var currentObject = ProductImage.productImageArray[ProductImage.pastSelectionArray[i]];
+
+    currentObject.numTimesDisplayed += 1;
     if (productSelectionForm.productOptions[i].checked) {
       overallClicks += 1;
-      ProductImage.productImageArray[ProductImage.pastSelectionArray[i]].numTimesClicked += 1;
+      currentObject.numTimesClicked += 1;
     }
   }
   if (overallClicks === 25) {
     productSelectionForm.style.display = 'none';
+    drawChart();
     ProductImage.renderRankedTable();
     resultsTable.style.display = 'block';
   }
@@ -85,6 +101,19 @@ function productSelectionBtnHandler(event) {
 /***********************************
 *         Helper Functions         *
 ************************************/
+
+// Update chart arrays for drawing
+function updateChartArrays() {
+  for (var i = 0; i < ProductImage.productImageArray.length; i++) {
+    var currentObject = ProductImage.productImageArray[i];
+    labelsArray.push(currentObject.name);
+    clicksArray.push(currentObject.numTimesClicked);
+    numTimesDisplayedArray.push(currentObject.numTimesDisplayed);
+    
+    calcPercentageClicked();
+    percentClickedArray.push(currentObject.percentageClicked);
+  }
+}
 
 // Generate 3 unique random numbers from within array range
 function pickRandomThree() {
@@ -110,19 +139,22 @@ function pickRandomThree() {
 
 // Function that tries to create a ranked array
 function createRankedArray() {
-  calcPercentageClicked();
   var rankedSelectionArray = ProductImage.productImageArray.splice(0);
-  for (var i = 0; i < rankedSelectionArray.length; i++){
+  for (var i = 0; i < rankedSelectionArray.length; i++) {
     //iterate through the array and sort from high to low
   }
   return rankedSelectionArray;
-
 }
 
 // Helper function to calculate the percentage clicked for each object
 function calcPercentageClicked() {
   for (var product in ProductImage.productImageArray) {
-    ProductImage.productImageArray[product].percentageClicked = 100 * (ProductImage.productImageArray[product].numTimesClicked / ProductImage.productImageArray[product].numTimesDisplayed);
+    var currentObject = ProductImage.productImageArray[product];
+    if (currentObject.numTimesDisplayed === 0) {
+      currentObject.percentageClicked = 0;
+    } else {
+      currentObject.percentageClicked = 100 * (currentObject.numTimesClicked / currentObject.numTimesDisplayed);
+    }
   }
 }
 
@@ -166,3 +198,51 @@ new ProductImage('Water Can', './img/water-can.jpg', 'waterCanImg');
 new ProductImage('Wine Glass', './img/wine-glass.jpg', 'wineGlassImg');
 
 ProductImage.renderRandomThree();
+
+
+// ++++++++++++++++++++++++++++++++++++++++++++
+// CHART STUFF
+// Charts rendered using Chart JS v.2.7.2
+// http://www.chartjs.org/
+// ++++++++++++++++++++++++++++++++++++++++++++
+
+var data = {
+  labels: labelsArray, // titles array we declared earlier
+  datasets: [{
+    data: percentClickedArray, // votes array we declared earlier
+    backgroundColor: chartColors,
+    hoverBackgroundColor: 'white'
+  }]
+};
+
+function drawChart() {
+  updateChartArrays();
+  var ctx = document.getElementById('votes-chart').getContext('2d');
+
+  clicksChart = new Chart(ctx, {
+    type: 'pie',
+    data: data, //created above
+    options: {
+      responsive: false,
+      animation: {
+        duration: 1000,
+        easing: 'easeOutBounce'
+      }
+    },
+    scales: {
+      yAxes: [{
+        ticks: {
+          max: 10,
+          min: 0,
+          stepSize: 1.0
+        }
+      }]
+    }
+  });
+
+  chartDrawn = true;
+}
+
+function hideChart() {
+  document.getElementById('votes-chart').hidden = true;
+}
