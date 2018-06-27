@@ -11,6 +11,10 @@ var htmlArray = [];
 
 var sessionClicks = 0;
 
+if (localStorage.getItem('sessionClicks')) {
+  sessionClicks = JSON.parse(localStorage.getItem('sessionClicks'));
+}
+
 // Arrays for the chart
 var labelsArray = [];
 var clicksArray = [];
@@ -99,11 +103,16 @@ function productSelectionBtnHandler(event) {
       currentObject.numTimesClicked += 1;
     }
   }
+
+  localStorage.setItem('sessionClicks', sessionClicks);
+
   if (sessionClicks === 25) {
     productSelectionForm.style.display = 'none';
     drawChart();
     ProductItem.renderRankedTable();
     resultsTable.style.display = 'table';
+    sessionClicks = 0;
+    localStorage.setItem('sessionClicks', sessionClicks);
   }
   ProductItem.renderRandomThree();
 }
