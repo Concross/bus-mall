@@ -115,6 +115,8 @@ function productSelectionBtnHandler(event) {
     localStorage.setItem('sessionClicks', sessionClicks);
   }
   ProductItem.renderRandomThree();
+  updateProductItemStorage();
+  updatePastProductSelection();
 }
 
 
@@ -284,3 +286,11 @@ function hideChart() {
 // GOOD 
 // var testData = ['hi', 2];
 // localStorage.setItem('goodData', JSON.stringify(testData));
+
+function updateProductItemStorage () {
+  localStorage.setItem('productItemArray', JSON.stringify(ProductItem.productItemArray));
+}
+
+function updatePastProductSelection () {
+  localStorage.setItem('pastSelectionArray', JSON.stringify(ProductItem.pastSelectionArray));
+}
