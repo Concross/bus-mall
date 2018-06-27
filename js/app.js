@@ -1,6 +1,5 @@
 'use strict';
 
-
 /***********************************
 *         Global Variables         *
 ************************************/
@@ -28,6 +27,10 @@ var chartColors = ['#E52B50', '#FFBF00', '#9966CC', '#FBCEB1', '#7FFFD4', '#007F
 var clicksChart;
 var chartDrawn = false;
 hideChart();
+
+/***********************************
+*     Comment     *
+************************************/
 
 /***********************************
 *      Product Image Object        *
@@ -256,3 +259,21 @@ function drawChart() {
 function hideChart() {
   document.getElementById('votes-chart').hidden = true;
 }
+
+
+/***********************************
+*     Local Storage                *
+************************************/
+// Don't forget to JSON.stringify(var) and JSON.parse(var)
+// Update temporary clicks count on local storage after every click
+
+// Update 'big daddy' array on ls after every 25 clicks
+
+// Example of bad data vs good data
+// BAD
+// var testDate = ['hi', 2];
+// localStorage.setItem('connor', testData);
+
+// GOOD 
+// var testData = ['hi', 2];
+// localStorage.setItem('goodData', JSON.stringify(testData));
