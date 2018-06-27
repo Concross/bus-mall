@@ -42,21 +42,27 @@
           <legend></legend>
           
           <section>
+            <label for="optionOne">
             <h1 id="optionOneHeader"></h1>
-            <img src="" id="productOptionOne" height="300" width="300" alt="">
-            <input type="radio" name="productOptions" value="0">
+              <img src="" id="productOptionOne" height="300" width="300" alt="">
+            </label>
+              <input type="radio" name="productOptions" id="optionOne" value="0">
           </section>
           
           <section>
-            <h1 id="optionTwoHeader"></h1>
-            <img src="" id="productOptionTwo" height="300" width="300" alt="">
-            <input type="radio" name="productOptions" value="1">
+            <label for="optionTwo">
+              <h1 id="optionTwoHeader"></h1>
+              <img src="" id="productOptionTwo" height="300" width="300" alt="">
+            </label>
+            <input type="radio" name="productOptions" id="optionTwo" value="1">
           </section>
           
           <section>
-            <h1 id="optionThreeHeader"></h1>
-            <img src="" id="productOptionThree" height="300" width="300" alt="">
-            <input type="radio" name="productOptions" value="2">
+            <label for="optionThree">
+              <h1 id="optionThreeHeader"></h1>
+              <img src="" id="productOptionThree" height="300" width="300" alt="">
+            </label>
+            <input type="radio" name="productOptions" id="optionThree" value="2">
           </section>
 
           <input type="submit" value="Vote!" id="voteButton">
@@ -65,13 +71,14 @@
       </form>
     </section>
 
+    <canvas id="votes-chart" height="400" width="800"></canvas>
+
     <section>
       <table id="results" style="display: none;">
 
       </table>
     </section>
 
-    <canvas id="votes-chart" height="400" width="400"></canvas>
     <section>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
         aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.

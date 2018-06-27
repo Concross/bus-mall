@@ -57,6 +57,10 @@ fieldset h1 {
   text-align: center;
 }
 
+label, input {
+  cursor: pointer;
+}
+
 input[type='radio'] {
   width: 100%;
   margin: 10px auto;
@@ -105,7 +109,7 @@ tr:not(:first-of-type) :first-child {
 }
 
 canvas {
-  width: 100%;
+  width: 75%;
   margin: 30px auto;
 }
 
