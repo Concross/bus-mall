@@ -3,18 +3,13 @@
 /***********************************
 *         Global Variables         *
 ************************************/
-var optionOneHeader = document.getElementById('optionOneHeader');
-var productOptionOneLabel = document.getElementById('productOptionOne');
-
-var optionTwoHeader = document.getElementById('optionTwoHeader');
-var productOptionTwoLabel = document.getElementById('productOptionTwo');
-
-var optionThreeHeader = document.getElementById('optionThreeHeader');
-var productOptionThreeLabel = document.getElementById('productOptionThree');
-
 var productSelectionForm = document.getElementById('productSelectionForm');
 var resultsTable = document.getElementById('results');
-var overallClicks = 0;
+
+// Array for containing html element objects for dom access
+var htmlArray = [];
+
+var sessionClicks = 0;
 
 // Arrays for the chart
 var labelsArray = [];
@@ -29,54 +24,57 @@ var chartDrawn = false;
 hideChart();
 
 /***********************************
-*     Comment     *
+*     Product Display Object       *
 ************************************/
+function ProductDisplay(headerElId, imgElId) {
+  this.header = document.getElementById(headerElId);
+  this.img = document.getElementById(imgElId);
+  htmlArray.push(this);
+}
+
+new ProductDisplay('optionOneHeader', 'optionOneImg');
+new ProductDisplay('optionTwoHeader', 'optionTwoImg');
+new ProductDisplay('optionThreeHeader', 'optionThreeImg');
 
 /***********************************
-*      Product Image Object        *
+*      Product Item Object        *
 ************************************/
-function ProductImage(name, src, id) {
+function ProductItem(name, src, id) {
   this.name = name;
   this.src = src;
   this.id = id;
   this.numTimesClicked = 0;
   this.numTimesDisplayed = 0;
   this.percentageClicked;
-  ProductImage.productImageArray.push(this);
+  ProductItem.productItemArray.push(this);
 };
 
-ProductImage.productImageArray = [];
-ProductImage.pastSelectionArray = [];
+ProductItem.productItemArray = [];
+ProductItem.pastSelectionArray = [];
 
 // Render three random images for selection
-ProductImage.renderRandomThree = function () {
+ProductItem.renderRandomThree = function () {
 
   pickRandomThree();
-  productOptionOneLabel.src = ProductImage.productImageArray[ProductImage.pastSelectionArray[0]].src;
-  optionOneHeader.textContent = ProductImage.productImageArray[ProductImage.pastSelectionArray[0]].name;
-  productOptionOneLabel.id = ProductImage.productImageArray[ProductImage.pastSelectionArray[0]].id;
 
-  productOptionTwoLabel.src = ProductImage.productImageArray[ProductImage.pastSelectionArray[1]].src;
-  optionTwoHeader.textContent = ProductImage.productImageArray[ProductImage.pastSelectionArray[1]].name;
-  productOptionTwoLabel.id = ProductImage.productImageArray[ProductImage.pastSelectionArray[1]].id;
-
-  productOptionThreeLabel.src = ProductImage.productImageArray[ProductImage.pastSelectionArray[2]].src;
-  optionThreeHeader.textContent = ProductImage.productImageArray[ProductImage.pastSelectionArray[2]].name;
-  productOptionThreeLabel.id = ProductImage.productImageArray[ProductImage.pastSelectionArray[2]].id;
+  for (var i = 0; i < htmlArray.length; i++) {
+    htmlArray[i].header.textContent = ProductItem.productItemArray[ProductItem.pastSelectionArray[i]].name;
+    htmlArray[i].img.src = ProductItem.productItemArray[ProductItem.pastSelectionArray[i]].src;
+  }
 
 };
 
 // Create a table using the available rankings;
-ProductImage.renderRankedTable = function () {
+ProductItem.renderRankedTable = function () {
   // createRankedArray();
   calcPercentageClicked();
   createHeaderRow();
-  for (var i in ProductImage.productImageArray) {
+  for (var i in ProductItem.productItemArray) {
     var trEl = document.createElement('tr');
-    createElAndAppend('th', ProductImage.productImageArray[i].name, trEl);
-    createElAndAppend('td', ProductImage.productImageArray[i].numTimesClicked + ' clicks for ' + ProductImage.productImageArray[i].name, trEl);
-    createElAndAppend('td', ProductImage.productImageArray[i].numTimesDisplayed, trEl);
-    createElAndAppend('td', ProductImage.productImageArray[i].percentageClicked, trEl);
+    createElAndAppend('th', ProductItem.productItemArray[i].name, trEl);
+    createElAndAppend('td', ProductItem.productItemArray[i].numTimesClicked + ' clicks for ' + ProductItem.productItemArray[i].name, trEl);
+    createElAndAppend('td', ProductItem.productItemArray[i].numTimesDisplayed, trEl);
+    createElAndAppend('td', ProductItem.productItemArray[i].percentageClicked, trEl);
     resultsTable.appendChild(trEl);
   }
 
@@ -93,21 +91,21 @@ productSelectionForm.addEventListener('submit', productSelectionBtnHandler);
 function productSelectionBtnHandler(event) {
   event.preventDefault();
   for (var i = 0; i < productSelectionForm.productOptions.length; i++) {
-    var currentObject = ProductImage.productImageArray[ProductImage.pastSelectionArray[i]];
+    var currentObject = ProductItem.productItemArray[ProductItem.pastSelectionArray[i]];
 
     currentObject.numTimesDisplayed += 1;
     if (productSelectionForm.productOptions[i].checked) {
-      overallClicks += 1;
+      sessionClicks += 1;
       currentObject.numTimesClicked += 1;
     }
   }
-  if (overallClicks === 25) {
+  if (sessionClicks === 25) {
     productSelectionForm.style.display = 'none';
     drawChart();
-    ProductImage.renderRankedTable();
+    ProductItem.renderRankedTable();
     resultsTable.style.display = 'table';
   }
-  ProductImage.renderRandomThree();
+  ProductItem.renderRandomThree();
 }
 
 
@@ -117,8 +115,8 @@ function productSelectionBtnHandler(event) {
 
 // Update chart arrays for drawing
 function updateChartArrays() {
-  for (var i = 0; i < ProductImage.productImageArray.length; i++) {
-    var currentObject = ProductImage.productImageArray[i];
+  for (var i = 0; i < ProductItem.productItemArray.length; i++) {
+    var currentObject = ProductItem.productItemArray[i];
     labelsArray.push(currentObject.name);
     clicksArray.push(currentObject.numTimesClicked);
     numTimesDisplayedArray.push(currentObject.numTimesDisplayed);
@@ -132,27 +130,27 @@ function updateChartArrays() {
 function pickRandomThree() {
 
   do {
-    var randNum1 = Math.floor(Math.random() * ProductImage.productImageArray.length);
-  } while (ProductImage.pastSelectionArray.includes(randNum1));
+    var randNum1 = Math.floor(Math.random() * ProductItem.productItemArray.length);
+  } while (ProductItem.pastSelectionArray.includes(randNum1));
 
   do {
-    var randNum2 = Math.floor(Math.random() * ProductImage.productImageArray.length);
-  } while (randNum2 === randNum1 || ProductImage.pastSelectionArray.includes(randNum2));
+    var randNum2 = Math.floor(Math.random() * ProductItem.productItemArray.length);
+  } while (randNum2 === randNum1 || ProductItem.pastSelectionArray.includes(randNum2));
 
   do {
-    var randNum3 = Math.floor(Math.random() * ProductImage.productImageArray.length);
-  } while (randNum3 === randNum2 || randNum3 === randNum1 || ProductImage.pastSelectionArray.includes(randNum3));
+    var randNum3 = Math.floor(Math.random() * ProductItem.productItemArray.length);
+  } while (randNum3 === randNum2 || randNum3 === randNum1 || ProductItem.pastSelectionArray.includes(randNum3));
 
-  ProductImage.pastSelectionArray = [randNum1, randNum2, randNum3];
+  ProductItem.pastSelectionArray = [randNum1, randNum2, randNum3];
 
-  return ProductImage.pastSelectionArray;
+  return ProductItem.pastSelectionArray;
 
 }
 
 
 // Function that tries to create a ranked array
 function createRankedArray() {
-  var rankedSelectionArray = ProductImage.productImageArray.splice(0);
+  var rankedSelectionArray = ProductItem.productItemArray.splice(0);
   for (var i = 0; i < rankedSelectionArray.length; i++) {
     //iterate through the array and sort from high to low
   }
@@ -161,8 +159,8 @@ function createRankedArray() {
 
 // Helper function to calculate the percentage clicked for each object
 function calcPercentageClicked() {
-  for (var product in ProductImage.productImageArray) {
-    var currentObject = ProductImage.productImageArray[product];
+  for (var product in ProductItem.productItemArray) {
+    var currentObject = ProductItem.productItemArray[product];
     if (currentObject.numTimesDisplayed === 0) {
       currentObject.percentageClicked = 0;
     } else {
@@ -189,28 +187,28 @@ function createHeaderRow() {
   resultsTable.appendChild(trEl);
 };
 
-new ProductImage('Bag', './img/bag.jpg', 'bagImg');
-new ProductImage('Banana', './img/banana.jpg', 'bananaImg');
-new ProductImage('Bathroom', './img/bathroom.jpg', 'bathroomImg');
-new ProductImage('Boots', './img/boots.jpg', 'bootsImg');
-new ProductImage('Breakfast', './img/breakfast.jpg', 'breakfastImg');
-new ProductImage('Bubblegum', './img/bubblegum.jpg', 'bubblegumImg');
-new ProductImage('Chair', './img/chair.jpg', 'chairImg');
-new ProductImage('Cthulhu', './img/cthulhu.jpg', 'cthulhuImg');
-new ProductImage('Dog Duck', './img/dog-duck.jpg', 'dogDuckImg');
-new ProductImage('Dragon', './img/dragon.jpg', 'dragonImg');
-new ProductImage('Pen', './img/pen.jpg', 'penImg');
-new ProductImage('Pet Sweep', './img/pet-sweep.jpg', 'petSweepImg');
-new ProductImage('Scissors', './img/scissors.jpg', 'scissorsImg');
-new ProductImage('Shark', './img/shark.jpg', 'sharkImg');
-new ProductImage('Sweep', './img/sweep.jpg', 'sweepImg');
-new ProductImage('Tauntaun', './img/tauntaun.jpg', 'tauntaunImg');
-new ProductImage('Unicorn', './img/unicorn.jpg', 'unicornImg');
-new ProductImage('USB', './img/usb.gif', 'usbImg');
-new ProductImage('Water Can', './img/water-can.jpg', 'waterCanImg');
-new ProductImage('Wine Glass', './img/wine-glass.jpg', 'wineGlassImg');
+new ProductItem('Bag', './img/bag.jpg', 'bagImg');
+new ProductItem('Banana', './img/banana.jpg', 'bananaImg');
+new ProductItem('Bathroom', './img/bathroom.jpg', 'bathroomImg');
+new ProductItem('Boots', './img/boots.jpg', 'bootsImg');
+new ProductItem('Breakfast', './img/breakfast.jpg', 'breakfastImg');
+new ProductItem('Bubblegum', './img/bubblegum.jpg', 'bubblegumImg');
+new ProductItem('Chair', './img/chair.jpg', 'chairImg');
+new ProductItem('Cthulhu', './img/cthulhu.jpg', 'cthulhuImg');
+new ProductItem('Dog Duck', './img/dog-duck.jpg', 'dogDuckImg');
+new ProductItem('Dragon', './img/dragon.jpg', 'dragonImg');
+new ProductItem('Pen', './img/pen.jpg', 'penImg');
+new ProductItem('Pet Sweep', './img/pet-sweep.jpg', 'petSweepImg');
+new ProductItem('Scissors', './img/scissors.jpg', 'scissorsImg');
+new ProductItem('Shark', './img/shark.jpg', 'sharkImg');
+new ProductItem('Sweep', './img/sweep.jpg', 'sweepImg');
+new ProductItem('Tauntaun', './img/tauntaun.jpg', 'tauntaunImg');
+new ProductItem('Unicorn', './img/unicorn.jpg', 'unicornImg');
+new ProductItem('USB', './img/usb.gif', 'usbImg');
+new ProductItem('Water Can', './img/water-can.jpg', 'waterCanImg');
+new ProductItem('Wine Glass', './img/wine-glass.jpg', 'wineGlassImg');
 
-ProductImage.renderRandomThree();
+ProductItem.renderRandomThree();
 
 
 // ++++++++++++++++++++++++++++++++++++++++++++
