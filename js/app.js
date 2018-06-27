@@ -43,6 +43,7 @@ new ProductDisplay('optionThreeHeader', 'optionThreeImg');
 /***********************************
 *      Product Item Object        *
 ************************************/
+// ProductItem Constructor function
 function ProductItem(name, src, id) {
   this.name = name;
   this.src = src;
@@ -57,10 +58,10 @@ ProductItem.productItemArray = [];
 ProductItem.pastSelectionArray = [];
 
 // Render three random images for selection
-ProductItem.renderRandomThree = function () {
+ProductItem.renderRandomItem = function () {
 
   pickRandomThree();
-
+  // This loop renders any number of ProductItems for exactly as many ProductDisplay objects exist in the htmlArray
   for (var i = 0; i < htmlArray.length; i++) {
     htmlArray[i].header.textContent = ProductItem.productItemArray[ProductItem.pastSelectionArray[i]].name;
     htmlArray[i].img.src = ProductItem.productItemArray[ProductItem.pastSelectionArray[i]].src;
@@ -70,19 +71,33 @@ ProductItem.renderRandomThree = function () {
 
 // Create a table using the available rankings;
 ProductItem.renderRankedTable = function () {
-  // createRankedArray();
   calcPercentageClicked();
   createHeaderRow();
-  for (var i in ProductItem.productItemArray) {
-    var trEl = document.createElement('tr');
-    createElAndAppend('th', ProductItem.productItemArray[i].name, trEl);
-    createElAndAppend('td', ProductItem.productItemArray[i].numTimesClicked + ' clicks for ' + ProductItem.productItemArray[i].name, trEl);
-    createElAndAppend('td', ProductItem.productItemArray[i].numTimesDisplayed, trEl);
-    createElAndAppend('td', ProductItem.productItemArray[i].percentageClicked, trEl);
-    resultsTable.appendChild(trEl);
-  }
+  createTableBody();
+  resultsTable.style.display = 'table';
 
 };
+
+new ProductItem('Bag', './img/bag.jpg', 'bagImg');
+new ProductItem('Banana', './img/banana.jpg', 'bananaImg');
+new ProductItem('Bathroom', './img/bathroom.jpg', 'bathroomImg');
+new ProductItem('Boots', './img/boots.jpg', 'bootsImg');
+new ProductItem('Breakfast', './img/breakfast.jpg', 'breakfastImg');
+new ProductItem('Bubblegum', './img/bubblegum.jpg', 'bubblegumImg');
+new ProductItem('Chair', './img/chair.jpg', 'chairImg');
+new ProductItem('Cthulhu', './img/cthulhu.jpg', 'cthulhuImg');
+new ProductItem('Dog Duck', './img/dog-duck.jpg', 'dogDuckImg');
+new ProductItem('Dragon', './img/dragon.jpg', 'dragonImg');
+new ProductItem('Pen', './img/pen.jpg', 'penImg');
+new ProductItem('Pet Sweep', './img/pet-sweep.jpg', 'petSweepImg');
+new ProductItem('Scissors', './img/scissors.jpg', 'scissorsImg');
+new ProductItem('Shark', './img/shark.jpg', 'sharkImg');
+new ProductItem('Sweep', './img/sweep.jpg', 'sweepImg');
+new ProductItem('Tauntaun', './img/tauntaun.jpg', 'tauntaunImg');
+new ProductItem('Unicorn', './img/unicorn.jpg', 'unicornImg');
+new ProductItem('USB', './img/usb.gif', 'usbImg');
+new ProductItem('Water Can', './img/water-can.jpg', 'waterCanImg');
+new ProductItem('Wine Glass', './img/wine-glass.jpg', 'wineGlassImg');
 
 /***********************************
 *         Event Listeners          *
@@ -110,19 +125,28 @@ function productSelectionBtnHandler(event) {
     productSelectionForm.style.display = 'none';
     drawChart();
     ProductItem.renderRankedTable();
-    resultsTable.style.display = 'table';
     sessionClicks = 0;
     localStorage.setItem('sessionClicks', sessionClicks);
   }
-  ProductItem.renderRandomThree();
-  updateProductItemStorage();
-  updatePastProductSelection();
+  ProductItem.renderRandomItem();
+  updateLocalStorage();
 }
 
 
 /***********************************
 *         Helper Functions         *
 ************************************/
+// Render table body
+function createTableBody() {
+  for (var i in ProductItem.productItemArray) {
+    var trEl = document.createElement('tr');
+    createElAndAppend('th', ProductItem.productItemArray[i].name, trEl);
+    createElAndAppend('td', ProductItem.productItemArray[i].numTimesClicked + ' clicks for ' + ProductItem.productItemArray[i].name, trEl);
+    createElAndAppend('td', ProductItem.productItemArray[i].numTimesDisplayed, trEl);
+    createElAndAppend('td', ProductItem.productItemArray[i].percentageClicked, trEl);
+    resultsTable.appendChild(trEl);
+  }
+}
 
 // Update chart arrays for drawing
 function updateChartArrays() {
@@ -131,7 +155,7 @@ function updateChartArrays() {
     labelsArray.push(currentObject.name);
     clicksArray.push(currentObject.numTimesClicked);
     numTimesDisplayedArray.push(currentObject.numTimesDisplayed);
-    
+
     calcPercentageClicked();
     percentClickedArray.push(currentObject.percentageClicked);
   }
@@ -156,16 +180,6 @@ function pickRandomThree() {
 
   return ProductItem.pastSelectionArray;
 
-}
-
-
-// Function that tries to create a ranked array
-function createRankedArray() {
-  var rankedSelectionArray = ProductItem.productItemArray.splice(0);
-  for (var i = 0; i < rankedSelectionArray.length; i++) {
-    //iterate through the array and sort from high to low
-  }
-  return rankedSelectionArray;
 }
 
 // Helper function to calculate the percentage clicked for each object
@@ -198,36 +212,15 @@ function createHeaderRow() {
   resultsTable.appendChild(trEl);
 };
 
-new ProductItem('Bag', './img/bag.jpg', 'bagImg');
-new ProductItem('Banana', './img/banana.jpg', 'bananaImg');
-new ProductItem('Bathroom', './img/bathroom.jpg', 'bathroomImg');
-new ProductItem('Boots', './img/boots.jpg', 'bootsImg');
-new ProductItem('Breakfast', './img/breakfast.jpg', 'breakfastImg');
-new ProductItem('Bubblegum', './img/bubblegum.jpg', 'bubblegumImg');
-new ProductItem('Chair', './img/chair.jpg', 'chairImg');
-new ProductItem('Cthulhu', './img/cthulhu.jpg', 'cthulhuImg');
-new ProductItem('Dog Duck', './img/dog-duck.jpg', 'dogDuckImg');
-new ProductItem('Dragon', './img/dragon.jpg', 'dragonImg');
-new ProductItem('Pen', './img/pen.jpg', 'penImg');
-new ProductItem('Pet Sweep', './img/pet-sweep.jpg', 'petSweepImg');
-new ProductItem('Scissors', './img/scissors.jpg', 'scissorsImg');
-new ProductItem('Shark', './img/shark.jpg', 'sharkImg');
-new ProductItem('Sweep', './img/sweep.jpg', 'sweepImg');
-new ProductItem('Tauntaun', './img/tauntaun.jpg', 'tauntaunImg');
-new ProductItem('Unicorn', './img/unicorn.jpg', 'unicornImg');
-new ProductItem('USB', './img/usb.gif', 'usbImg');
-new ProductItem('Water Can', './img/water-can.jpg', 'waterCanImg');
-new ProductItem('Wine Glass', './img/wine-glass.jpg', 'wineGlassImg');
 
-ProductItem.renderRandomThree();
 
+ProductItem.renderRandomItem();
 
 // ++++++++++++++++++++++++++++++++++++++++++++
 // CHART STUFF
 // Charts rendered using Chart JS v.2.7.2
 // http://www.chartjs.org/
 // ++++++++++++++++++++++++++++++++++++++++++++
-
 var data = {
   labels: labelsArray, // titles array we declared earlier
   datasets: [{
@@ -269,28 +262,18 @@ function hideChart() {
   document.getElementById('votes-chart').hidden = true;
 }
 
-
 /***********************************
 *     Local Storage                *
 ************************************/
-// Don't forget to JSON.stringify(var) and JSON.parse(var)
-// Update temporary clicks count on local storage after every click
-
-// Update 'big daddy' array on ls after every 25 clicks
-
-// Example of bad data vs good data
-// BAD
-// var testDate = ['hi', 2];
-// localStorage.setItem('connor', testData);
-
-// GOOD 
-// var testData = ['hi', 2];
-// localStorage.setItem('goodData', JSON.stringify(testData));
-
-function updateProductItemStorage () {
+function updateProductItemStorage() {
   localStorage.setItem('productItemArray', JSON.stringify(ProductItem.productItemArray));
 }
 
-function updatePastProductSelection () {
+function updatePastProductSelection() {
   localStorage.setItem('pastSelectionArray', JSON.stringify(ProductItem.pastSelectionArray));
+}
+
+function updateLocalStorage() {
+  updateProductItemStorage();
+  updatePastProductSelection();
 }
