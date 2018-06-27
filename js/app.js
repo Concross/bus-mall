@@ -4,9 +4,15 @@
 /***********************************
 *         Global Variables         *
 ************************************/
+var optionOneHeader = document.getElementById('optionOneHeader');
 var productOptionOneLabel = document.getElementById('productOptionOne');
+
+var optionTwoHeader = document.getElementById('optionTwoHeader');
 var productOptionTwoLabel = document.getElementById('productOptionTwo');
+
+var optionThreeHeader = document.getElementById('optionThreeHeader');
 var productOptionThreeLabel = document.getElementById('productOptionThree');
+
 var productSelectionForm = document.getElementById('productSelectionForm');
 var resultsTable = document.getElementById('results');
 var overallClicks = 0;
@@ -21,6 +27,7 @@ var chartColors = ['#E52B50', '#FFBF00', '#9966CC', '#FBCEB1', '#7FFFD4', '#007F
 
 var clicksChart;
 var chartDrawn = false;
+hideChart();
 
 /***********************************
 *      Product Image Object        *
@@ -43,12 +50,15 @@ ProductImage.renderRandomThree = function () {
 
   pickRandomThree();
   productOptionOneLabel.src = ProductImage.productImageArray[ProductImage.pastSelectionArray[0]].src;
+  optionOneHeader.textContent = ProductImage.productImageArray[ProductImage.pastSelectionArray[0]].name;
   productOptionOneLabel.id = ProductImage.productImageArray[ProductImage.pastSelectionArray[0]].id;
 
   productOptionTwoLabel.src = ProductImage.productImageArray[ProductImage.pastSelectionArray[1]].src;
+  optionTwoHeader.textContent = ProductImage.productImageArray[ProductImage.pastSelectionArray[1]].name;
   productOptionTwoLabel.id = ProductImage.productImageArray[ProductImage.pastSelectionArray[1]].id;
 
   productOptionThreeLabel.src = ProductImage.productImageArray[ProductImage.pastSelectionArray[2]].src;
+  optionThreeHeader.textContent = ProductImage.productImageArray[ProductImage.pastSelectionArray[2]].name;
   productOptionThreeLabel.id = ProductImage.productImageArray[ProductImage.pastSelectionArray[2]].id;
 
 };
@@ -92,7 +102,7 @@ function productSelectionBtnHandler(event) {
     productSelectionForm.style.display = 'none';
     drawChart();
     ProductImage.renderRankedTable();
-    resultsTable.style.display = 'block';
+    resultsTable.style.display = 'table';
   }
   ProductImage.renderRandomThree();
 }
@@ -211,7 +221,7 @@ var data = {
   datasets: [{
     data: percentClickedArray, // votes array we declared earlier
     backgroundColor: chartColors,
-    hoverBackgroundColor: 'white'
+    hoverBackgroundColor: 'gray'
   }]
 };
 
