@@ -50,7 +50,7 @@ function ProductItem(name, src, id) {
   this.id = id;
   this.numTimesClicked = 0;
   this.numTimesDisplayed = 0;
-  this.percentageClicked;
+  this.percentageClicked = 0.0;
   ProductItem.productItemArray.push(this);
 };
 
@@ -138,12 +138,13 @@ function productSelectionBtnHandler(event) {
 ************************************/
 // Render table body
 function createTableBody() {
-  for (var i in ProductItem.productItemArray) {
+  var percentageClickedRankArray = createRankedArray(); 
+  for (var i in percentageClickedRankArray) {
     var trEl = document.createElement('tr');
-    createElAndAppend('th', ProductItem.productItemArray[i].name, trEl);
-    createElAndAppend('td', ProductItem.productItemArray[i].numTimesClicked + ' clicks for ' + ProductItem.productItemArray[i].name, trEl);
-    createElAndAppend('td', ProductItem.productItemArray[i].numTimesDisplayed, trEl);
-    createElAndAppend('td', ProductItem.productItemArray[i].percentageClicked, trEl);
+    createElAndAppend('th', percentageClickedRankArray[i].name, trEl);
+    createElAndAppend('td', percentageClickedRankArray[i].numTimesClicked + ' clicks for ' + percentageClickedRankArray[i].name, trEl);
+    createElAndAppend('td', percentageClickedRankArray[i].numTimesDisplayed, trEl);
+    createElAndAppend('td', percentageClickedRankArray[i].percentageClicked, trEl);
     resultsTable.appendChild(trEl);
   }
 }
@@ -212,7 +213,12 @@ function createHeaderRow() {
   resultsTable.appendChild(trEl);
 };
 
-
+// Returns a sorted array based on percentageClicked properties of ProductItem objects
+function createRankedArray() {
+  var rankedArray = ProductItem.productItemArray.slice();
+  rankedArray.sort(function(a, b){return a.percentageClicked - b.percentageClicked;});
+  return rankedArray.reverse();
+}
 
 ProductItem.renderRandomItem();
 
