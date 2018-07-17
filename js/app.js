@@ -3,6 +3,8 @@
 /***********************************
 *         Global Variables         *
 ************************************/
+var username;
+
 var productSelectionForm = document.getElementById('productSelectionForm');
 var resultsTable = document.getElementById('results');
 
@@ -10,10 +12,6 @@ var resultsTable = document.getElementById('results');
 var htmlArray = [];
 
 var sessionClicks = 0;
-
-if (localStorage.getItem('sessionClicks')) {
-  sessionClicks = JSON.parse(localStorage.getItem('sessionClicks'));
-}
 
 // Arrays for the chart
 var labelsArray = [];
@@ -27,9 +25,27 @@ var clicksChart;
 var chartDrawn = false;
 hideChart();
 
+
 /***********************************
-*     Product Display Object       *
+*     UserData Object              *
 ************************************/
+function UserData(username, sessionClicks, tempArray, pastSelectionArray) {
+  this.username = username;
+  this.sessionClicks = sessionClicks;
+  this.tempArray = tempArray;
+  this.pastSelectionArray = pastSelectionArray;
+
+}
+
+if(localStorage.getItem('username')){
+  username = JSON.parse(localStorage.getItem('username'));
+  sessionClicks = JSON.parse(localStorage.getItem('sessionClicks'));
+  ProductItem.tempArray = JSON.parse(localStorage.getItem('tempArray'));
+  ProductItem.pastSelectionArray = JSON.parse(localStorage.getItem('pastSelectionArray'));
+}
+/***********************************
+ *     Product Display Object       *
+ ************************************/
 function ProductDisplay(headerElId, imgElId) {
   this.header = document.getElementById(headerElId);
   this.img = document.getElementById(imgElId);
@@ -41,8 +57,8 @@ new ProductDisplay('optionTwoHeader', 'optionTwoImg');
 new ProductDisplay('optionThreeHeader', 'optionThreeImg');
 
 /***********************************
-*      Product Item Object        *
-************************************/
+ *      Product Item Object        *
+ ************************************/
 // ProductItem Constructor function
 function ProductItem(name, src, id) {
   this.name = name;
@@ -54,8 +70,10 @@ function ProductItem(name, src, id) {
   ProductItem.productItemArray.push(this);
 };
 
+ProductItem.tempArray = [];
 ProductItem.productItemArray = [];
 ProductItem.pastSelectionArray = [];
+
 
 // Render three random images for selection
 ProductItem.renderRandomItem = function () {
@@ -119,17 +137,15 @@ function productSelectionBtnHandler(event) {
     }
   }
 
-  localStorage.setItem('sessionClicks', sessionClicks);
+  updateLocalStorage();
 
   if (sessionClicks === 25) {
     productSelectionForm.style.display = 'none';
     drawChart();
     ProductItem.renderRankedTable();
     sessionClicks = 0;
-    localStorage.setItem('sessionClicks', sessionClicks);
   }
   ProductItem.renderRandomItem();
-  updateLocalStorage();
 }
 
 
@@ -138,7 +154,7 @@ function productSelectionBtnHandler(event) {
 ************************************/
 // Render table body
 function createTableBody() {
-  var percentageClickedRankArray = createRankedArray(); 
+  var percentageClickedRankArray = createRankedArray();
   for (var i in percentageClickedRankArray) {
     var trEl = document.createElement('tr');
     createElAndAppend('th', percentageClickedRankArray[i].name, trEl);
@@ -216,8 +232,14 @@ function createHeaderRow() {
 // Returns a sorted array based on percentageClicked properties of ProductItem objects
 function createRankedArray() {
   var rankedArray = ProductItem.productItemArray.slice();
-  rankedArray.sort(function(a, b){return a.percentageClicked - b.percentageClicked;});
+  rankedArray.sort(function (a, b) { return a.percentageClicked - b.percentageClicked; });
   return rankedArray.reverse();
+}
+
+function getUser() {
+  username = prompt('Thank you for choosing to participate! What\'s your name?');
+  alert('Thanks! Let\'s begin!');
+  localStorage.setItem('username', JSON.stringify(username));
 }
 
 ProductItem.renderRandomItem();
@@ -271,15 +293,7 @@ function hideChart() {
 /***********************************
 *     Local Storage                *
 ************************************/
-function updateProductItemStorage() {
-  localStorage.setItem('productItemArray', JSON.stringify(ProductItem.productItemArray));
-}
-
-function updatePastProductSelection() {
-  localStorage.setItem('pastSelectionArray', JSON.stringify(ProductItem.pastSelectionArray));
-}
-
 function updateLocalStorage() {
-  updateProductItemStorage();
-  updatePastProductSelection();
+  localStorage.setItem('sessionClicks', JSON.stringify(sessionClicks));
+  localStorage.setItem('tempArray', JSON.stringify(tempArray));
 }
